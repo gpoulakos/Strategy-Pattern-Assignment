@@ -2,13 +2,13 @@
 {
     public enum Color
     {
-        RED = 7,
-        ORANGE = 3,
-        YELLOW = 10,
+        BLUE = 3,
         GREEN = 4,
-        BLUE = 8,
-        INDIGO = 9,
-        VIOLET = 12
+        INDIGO = 7,
+        ORANGE = 8,
+        RED = 9,
+        VIOLET = 10,
+        YELLOW = 12
     }
 }
 

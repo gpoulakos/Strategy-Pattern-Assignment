@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace StrategyPatternAssignment
 {
-    class TShirt
+    class Shirt
     {
         public  Color Color { get; set; }
         public  Size Size { get; set; }
         public  Fabric Fabric { get; set; }
 
-        private decimal _price;
-        public decimal Price
+        private int _price;
+        public int Price
         {
             get
             {
@@ -21,15 +21,19 @@ namespace StrategyPatternAssignment
             }
             set
             {
-                _price = (decimal)Color + (decimal)Size + (decimal)Fabric;
+                _price = (int)Color + (int)Size + (int)Fabric;
             }
         }
 
-        public TShirt(Color color, Size size, Fabric fabric)
+        public Shirt(Color color, Size size, Fabric fabric)
         {
             Color = color;
             Size = size;
             Fabric = fabric;
+        }
+        public void Output()
+        {
+            Console.WriteLine("{0,-15}{1,-15}{2,-15}", Color, Size, Fabric);
         }
     }
 }

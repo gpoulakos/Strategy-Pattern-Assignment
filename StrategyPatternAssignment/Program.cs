@@ -1,4 +1,6 @@
-﻿using System;
+﻿using StrategyPatternAssignment.Database;
+using StrategyPatternAssignment.SortingAlgorithms;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,157 +10,228 @@ namespace StrategyPatternAssignment
 {
     class Program
     {
-        private static int Menu(int addtocart)
-        {
-            bool keepBuying = true;
-
-            do
-            {
-                Console.WriteLine("Choose your color: \r\n" +
-               "[1] Red, [2] Orange, [3] Yellow, [4] Green, [5] Blue, [6] Indigo, [7] Violet");
-                var color = Console.ReadLine();
-
-                switch (color)
-                {
-                    case "1":
-                        addtocart += (int)Color.RED;
-                        break;
-                    case "2":
-                        addtocart += (int)Color.ORANGE;
-                        break;
-                    case "3":
-                        addtocart += (int)Color.YELLOW;
-                        break;
-                    case "4":
-                        addtocart += (int)Color.GREEN;
-                        break;
-                    case "5":
-                        addtocart += (int)Color.BLUE;
-                        break;
-                    case "6":
-                        addtocart += (int)Color.INDIGO;
-                        break;
-                    case "7":
-                        addtocart += (int)Color.VIOLET;
-                        break;
-                    default:
-                        Console.WriteLine("Something went wrong. Please try again!");
-                        break;
-                }
-                Console.WriteLine("============================================");
-
-                Console.WriteLine("Choose your size : \r\n" +
-                   "[1] XS, [2] S, [3] M, [4] L, [5] XL, [6] XXL, [7] XXXL");
-                var size = Console.ReadLine();
-
-                switch (size)
-                {
-                    case "1":
-                        addtocart += (int)Size.XS;
-                        break;
-                    case "2":
-                        addtocart += (int)Size.S;
-                        break;
-                    case "3":
-                        addtocart += (int)Size.M;
-                        break;
-                    case "4":
-                        addtocart += (int)Size.L;
-                        break;
-                    case "5":
-                        addtocart += (int)Size.XL;
-                        break;
-                    case "6":
-                        addtocart += (int)Size.XXL;
-                        break;
-                    case "7":
-                        addtocart += (int)Size.XXXL;
-                        break;
-                    default:
-                        Console.WriteLine("Something went wrong. Please try again!");
-                        break;
-                }
-                Console.WriteLine("============================================");
-
-                Console.WriteLine("Choose a fabric : \r\n" +
-                    "[1] Wool, [2] Cotton, [3] Polyester, [4] Rayon, [5] Linen, [6] Cashmere, [7] Silk");
-                var fabric = Console.ReadLine();
-
-                switch (fabric)
-                {
-                    case "1":
-                        addtocart += (int)Fabric.WOOL;
-                        break;
-                    case "2":
-                        addtocart += (int)Fabric.COTTON;
-                        break;
-                    case "3":
-                        addtocart += (int)Fabric.POLYESTER;
-                        break;
-                    case "4":
-                        addtocart += (int)Fabric.RAYON;
-                        break;
-                    case "5":
-                        addtocart += (int)Fabric.LINEN;
-                        break;
-                    case "6":
-                        addtocart += (int)Fabric.CASHMERE;
-                        break;
-                    case "7":
-                        addtocart += (int)Fabric.SILK;
-                        break;
-                    default:
-                        Console.WriteLine("Something went wrong. Please try again!");
-                        break;
-                }
-                Console.WriteLine("============================================");
-
-                Console.WriteLine("Do you want to continue purchasing T-Shirts? Y/N");
-                string answer = Console.ReadLine();
-                if (answer == "N" || answer == "n")
-                    break;
-
-            } while (keepBuying);
-            return addtocart;
-        }
-
         static void Main(string[] args)
         {
-            Console.WriteLine("Welcome to our E-Shop!");
+            MyDatabase db = new MyDatabase();
 
-            int addtocart = 0;
-            PaymentProcedure paymentProcedure = new PaymentProcedure();
+            Console.WriteLine("Below you can see the collection of clothes of our shop, sorted by Color, Fabric and Size!!");
+            Console.WriteLine();
+            var shirts1 = db.Shirts;
+            #region BubbleSort
 
-            addtocart = Menu(addtocart);
+            // ======================= Bubble Sort for Size ======================= //
 
-            Console.WriteLine("Based on your purchase, proceed to payment via:");
+            Console.BackgroundColor = ConsoleColor.Gray;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.WriteLine("Size Ascending with BubbleSort");
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
+            BubbleSort.SizeAsc(shirts1);
+            PrintAllItems(shirts1);
 
-            if (addtocart == 0 || addtocart < 50)
-            {
-                paymentProcedure.SetPaymentMethod(new Cash());
+            Console.BackgroundColor = ConsoleColor.Gray;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.WriteLine("Size Descending with BubbleSort");
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
+            BubbleSort.SizeDesc(shirts1);
+            PrintAllItems(shirts1);
 
-                Console.ForegroundColor = ConsoleColor.DarkGreen;
-                Console.WriteLine("Cash");
-            }
-            else if (addtocart >= 50 || addtocart <= 100)
-            {
-                paymentProcedure.SetPaymentMethod(new BankTransfer());
+            // ======================= Bubble Sort for Colors ======================= //
 
-                Console.ForegroundColor = ConsoleColor.DarkYellow;
-                Console.WriteLine("Bank Transfer");
-            }
-            else
-            {
-                paymentProcedure.SetPaymentMethod(new CreditorDebitCard());
+            Console.BackgroundColor = ConsoleColor.Gray;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.WriteLine("Color Ascending with BubbleSort");
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
+            BubbleSort.ColorAsc(shirts1);
+            PrintAllItems(shirts1);
 
-                Console.ForegroundColor = ConsoleColor.DarkRed;
-                Console.WriteLine("Credit or Debit Card");
-            }
+            Console.BackgroundColor = ConsoleColor.Gray;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.WriteLine("Color Descending with BubbleSort");
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
+            BubbleSort.ColorDesc(shirts1);
+            PrintAllItems(shirts1);
 
-            paymentProcedure.Price(addtocart);
+            // ======================= Bubble Sort for Fabric ======================= //
+
+            Console.BackgroundColor = ConsoleColor.Gray;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.WriteLine("Fabric Ascending with BubbleSort");
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
+            BubbleSort.FabricAsc(shirts1);
+            PrintAllItems(shirts1);
+
+            Console.BackgroundColor = ConsoleColor.Gray;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.WriteLine("Fabric Descending with BubbleSort");
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
+            BubbleSort.FabricDesc(shirts1);
+            PrintAllItems(shirts1);
+
+            // ======================= Bubble Sort for SizeColorFabric ======================= //
+
+            Console.BackgroundColor = ConsoleColor.Gray;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.WriteLine("SizeColorFabric Ascending with BubbleSort");
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
+            BubbleSort.SizeColorFabricAsc(shirts1);
+            PrintAllItems(shirts1);
+
+            Console.BackgroundColor = ConsoleColor.Gray;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.WriteLine("SizeColorFabric Descending with BubbleSort");
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
+            BubbleSort.SizeColorFabricDesc(shirts1);
+            PrintAllItems(shirts1);
+
+            #endregion
+
+            var shirts = db.Shirts.ToArray();
+
+            #region QuickSort
+            // ======================= Quick Sort for Colors======================= //
+
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.WriteLine("Color Ascending");
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
+            QuickSort.ColorAsc(shirts, 0, shirts.Length - 1);
+            PrintAllItems(shirts);
+
+            Console.WriteLine("=================================================");
+
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.WriteLine("Color Descending");
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
+            QuickSort.ColorDesc(shirts, 0, shirts.Length - 1);
+            PrintAllItems(shirts);
+
+            // ======================= Quick Sort for Size ======================= //
+
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.WriteLine("Size Ascending");
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
+            QuickSort.SizeAsc(shirts, 0, shirts.Length - 1);
+            PrintAllItems(shirts);
+
+            Console.WriteLine("=================================================");
+
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.WriteLine("Size Descending");
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
+            QuickSort.SizeDesc(shirts, 0, shirts.Length - 1);
+            PrintAllItems(shirts);
+
+            // ======================= Quick Sort for Fabric ======================= //
+
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.WriteLine("Fabric Ascending");
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
+            QuickSort.FabricAsc(shirts, 0, shirts.Length - 1);
+            PrintAllItems(shirts);
+
+            Console.WriteLine("=================================================");
+
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.WriteLine("Fabric Descending");
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
+            QuickSort.FabricDesc(shirts, 0, shirts.Length - 1);
+            PrintAllItems(shirts);
+
+            #endregion
 
 
+            #region BucketSort
+
+            Console.BackgroundColor = ConsoleColor.Gray;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.WriteLine("Bucket by Size Ascending");
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
+            var listsize1 = BucketSort.SortbySizeAsc(shirts);
+            PrintAllItems(listsize1);
+
+            Console.BackgroundColor = ConsoleColor.Gray;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.WriteLine("Bucket by Size Descending");
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
+            var listsize2 = BucketSort.SortbySizeDesc(shirts);
+            PrintAllItems(listsize2);
+
+            Console.BackgroundColor = ConsoleColor.Gray;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.WriteLine("Bucket by Color Ascending");
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
+            var listcolor1 = BucketSort.SortbyColorAsc(shirts);
+            PrintAllItems(listcolor1);
+
+            Console.BackgroundColor = ConsoleColor.Gray;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.WriteLine("Bucket by Color Descending");
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
+            var listcolor2 = BucketSort.SortbyColorDesc(shirts);
+            PrintAllItems(listcolor2);
+
+            Console.BackgroundColor = ConsoleColor.Gray;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.WriteLine("Bucket by Fabric Ascending");
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
+            var listfabric1 = BucketSort.SortbyFabricAsc(shirts);
+            PrintAllItems(listfabric1);
+
+            Console.BackgroundColor = ConsoleColor.Gray;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.WriteLine("Bucket by Fabric Descending");
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
+            var listfabric2 = BucketSort.SortbyFabricDesc(shirts);
+            PrintAllItems(listfabric2);
+
+            #endregion
+
+            
+
+            //EshopApplication.Checkout();
             Console.ReadKey();
+        }
+
+        public static void PrintAllItems(IEnumerable<Shirt> shirts)
+        {
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.WriteLine("All Clothes");
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("{0,-15}{1,-15}{2,-15}", "Color", "Size", "Fabric");
+            Console.ForegroundColor = ConsoleColor.White;
+            foreach (var item in shirts)
+            {
+                item.Output();
+            }
+
         }
     }
 }

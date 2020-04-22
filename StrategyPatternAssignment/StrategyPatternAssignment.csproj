@@ -43,6 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Database\MyDatabase.cs" />
+    <Compile Include="EshopApplication.cs" />
+    <Compile Include="SortingAlgorithms\BubbleSort.cs" />
+    <Compile Include="SortingAlgorithms\BucketSort.cs" />
+    <Compile Include="SortingAlgorithms\QuickSort.cs" />
     <Compile Include="TSHIRT\Color.cs" />
     <Compile Include="TSHIRT\Fabric.cs" />
     <Compile Include="PaymentMethod\PaymentMethod.cs" />
